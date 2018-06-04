@@ -1,15 +1,31 @@
-##########
-# CERT AU IT2Go setup script
-#
-# Instructions:
-# 1. Install Win2Go onto USB drive
-# 2. Download and run this script
-# 3. Take 5!
-#
-# Primary Author: Dean Bird <dean.bird@cert.gov.au>
-# Version: 1.0 - 16th May 2018
-#
-##########
+<#
+.SYNOPSIS
+Setup script for the CERT AU IR2Go environment. 
+
+.DESCRIPTION
+From within a new Windows installation on a USB drive, download and run this script.
+The script downloads commonly used Incident Response tools and configures the Windows environment ready.
+Further setup is required for tool locations, etc
+
+.INPUTS
+<None>
+
+.OUTPUTS
+<None> - Script output is sent to window
+
+.EXAMPLE
+Run the script
+./Setup-IR2Go.ps1
+
+.NOTES
+Author: Dean B <dean.bird@cert.gov.au>
+Version: 1.0
+Modified Date: 4th June 2018
+
+.LINK
+https://github.com/certau/ir2go
+
+#>
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -113,8 +129,10 @@ Function GeneralSetup() {
 	Write-Host "General Setup"
 
 	#Import the AWS Powershell module
-	Write-Host "Importing AWS Powershell module"
-	Install-Package -Name AWSPowerShell -force
+	if(!(Get-InstalledModule | Where-Object Name -eq AWSPowerShell)){
+		Write-Host "Importing AWS Powershell module"
+		Install-Package -Name AWSPowerShell -force
+	}	
 
 	Write-Host "Setting up AWS Profile"
 	Set-AWSCredential -AccessKey $aws_bucket_key -SecretKey $aws_bucket_secret -StoreAs CertAUIR2Go
