@@ -12,6 +12,19 @@ The tool can be installed onto any USB drive that is over 64GB and includes prim
 
 ### Prerequisites
 
+* USB Drive (64GB or larger)
+* S3 Bucket name
+* S3 Access key and Secret Key
+* Windows 10 install.wim
+* Internet access
+
+See the items below for further details
+
+#### Hardware
+
+The tool is designed to run on ANY USB drive that is 64GB or larger. (Larger will result in more room for the Tools Partition)
+It is recommended that the drive be USB3.
+
 #### Download Tools
 
 The tools are a vital part of the IR2Go environment. 
@@ -130,6 +143,14 @@ https://github.com/certau/ir2go/blob/master/WIM-Files/unattend.xml --> X:\Window
 
 8. Run the 'Start Setup of IR2Go' icon on the desktop as an administrator (Right Click --> Run As Administrator)
 When prompted, enter your AWS S3 bucket details
+
+## Alternative Installation
+
+The script can be run on any windows machine using the following command
+
+```
+powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('https://raw.githubusercontent.com/ertau/ir2go/master/Setup-IR2Go.ps1')|iex"
+```
 
 ## Authors
 
