@@ -115,7 +115,7 @@ BCDBOOT.EXE X:\Windows /S Y: /F ALL
 BCTBOOT.EXE X:\Windows /S Y:
 ```
 
-5. Install the required files to the USB Drive
+5. Install the required files to the USB Drive. (This step can be skipped if the files are added to the WIM file)
 ```
 #Copy the shortcut to the all users desktop
 https://github.com/certau/ir2go/blob/master/WIM-Files/Start%20Setup%20of%20IR2Go.lnk --> X:\Users\Public\Desktop\Start Setup of IR2Go.lnk
@@ -124,7 +124,7 @@ https://github.com/certau/ir2go/blob/master/WIM-Files/Start%20Setup%20of%20IR2Go
 https://github.com/certau/ir2go/blob/master/WIM-Files/unattend.xml --> X:\Windows\Panther\unattend.xml
 ```
 
-6. Boot to the USB device. This may take a few attemps as drivers etc are configured.
+6. Boot to the USB device. This may take a few restarts as drivers and Windows is setup. 
 
 7. Connect to Wi-Fi during the setup wizard. 
 
