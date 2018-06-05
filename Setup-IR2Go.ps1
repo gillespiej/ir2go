@@ -289,9 +289,11 @@ Function SetWallPaper() {
 ###########
 Function GetTools() {
 	#Remove the existing folder if it exists
-	Write-Host "Removing existing tools folder"
-	Remove-Item -path "$tools_dir\" -recurse -force
-
+	if(Test-Path $tools_dir){
+		Write-Host "Removing existing tools folder"
+		Remove-Item -path "$tools_dir\" -recurse -foreach
+	}
+	
 	#Loop through the tools
 	foreach($tool IN $acquisitionTools) {
 		downloadFileS3 "$tool" "$working_dir"
@@ -302,6 +304,8 @@ Function GetTools() {
 		#Remove the zip file
 		Write-Host "Removing $working_dir\$tmpFile"
 		Remove-Item -path "$working_dir\$tmpFile" -force
+		Write-Host "+-------+-------+-------+-------+-------+"
+		Write-Host ""
 	} 
 	
 	#Make the directory for the General files.
