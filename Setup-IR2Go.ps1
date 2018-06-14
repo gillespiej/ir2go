@@ -19,8 +19,8 @@ Run the script
 
 .NOTES
 Author: Dean B <dean.bird@cert.gov.au>
-Version: 1.0
-Modified Date: 4th June 2018
+Version: 1.1
+Modified Date: 14th June 2018
 
 .LINK
 https://github.com/certau/ir2go
@@ -32,16 +32,10 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 ##Variables - all directories have no trailing slash
 $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
 $script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
-$tools_dir = "T:\Tools\Acquisition\Windows"				## Tools location 
-$general_dir = "T:\Tools\General"						## General items location
-#Sizes are in bytes please
-$win_part_size = 25000000000							## 25GB
-$linux_part_size = 20000000000							## 20GB
-$tools_drive_letter = "T"								## Drive letter for tools partition
-$linux_drive_letter = "L"								## Drive letter for linux partition
+$tools_dir = "C:\Tools\Acquisition\Windows"				## Tools location 
+$general_dir = "C:\Tools\General"						## General items location
 $wallpaperURL = "General/background.png"	## URL of wallpaper
 $pdfviewerURL = "General/SumatraPDF.exe"	##SumatraPDF installer
-$awstoolsURL = "http://sdk-for-net.amazonwebservices.com/latest/AWSToolsAndSDKForNet.msi" ##AWS Tools for Powershell 
 
 ## Remove Script Locations - Arrays of URL of Script, Script description
 $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6daa1/raw/2e5e6f244af9189b81f01873c94b350ee906f8bb/reclaimWindows10.ps1", "Reclaim Windows from GITHUB")
@@ -60,6 +54,14 @@ $menuEXE = "Menu/PStart.exe"
 $menuConfig = "https://raw.githubusercontent.com/certau/ir2go/master/Config/PStart.xml"
 
 $linuxURL = "http://mirror.exetel.com.au/pub/ubuntu/xubuntu-releases/16.04/release/xubuntu-16.04.1-desktop-amd64.iso"
+
+### Currently Unused Variables
+#Sizes are in bytes please
+#$win_part_size = 25000000000                            ## 25GB
+#$linux_part_size = 20000000000                          ## 20GB
+#$tools_drive_letter = "T"                               ## Drive letter for tools partition
+#$linux_drive_letter = "L"                               ## Drive letter for linux partition
+#$awstoolsURL = "http://sdk-for-net.amazonwebservices.com/latest/AWSToolsAndSDKForNet.msi" ##AWS Tools for Powershell 
 
 ## Menu (pStart)
 
@@ -328,7 +330,7 @@ Function GetTools() {
 	#Creating a link on the desktop
 	cmd /c mklink "%USERPROFILE%\Desktop\IR2Go Menu" "$general_dir\$menuName"
 	#Creating a link in the root of T Drive
-	cmd /c mklink "T:\IR2Go Menu" "$general_dir\$menuName"
+	#cmd /c mklink "T:\IR2Go Menu" "$general_dir\$menuName"
 	
 	#write entry in event log
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Tools downloaded and installed to T Drive" 
@@ -390,8 +392,10 @@ if(Test-Path $script_check_file){
     SetWallPaper
     RemoveWin10Apps
     remoteScript $reclaimWindows[0] $reclaimWindows[1]
-    SetupPartitions
     getTools
+
+    ##Unused 
+    #SetupPartitions
 
     ##Echo done into the check file to prevent it from running again.
     Get-Date | Out-File $script_check_file
