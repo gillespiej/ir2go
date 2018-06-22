@@ -1,4 +1,4 @@
-# CERT Australia - IR2Go
+# Australian Cyber Security Centre (ACSC) - IR2Go
 
 IR2Go is an Incident Response tool kit designed to help in the acquisition of forensic artifacts such as disk, memory and network.
 The tool can be installed onto any USB drive that is over 64GB and includes primary and secondary tools, plus guides on how to perform the capture. The IR2Go tool is deployable from any computer with a internet connection and is easy to deploy.
@@ -154,7 +154,7 @@ powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.Cr
 
 ## Authors
 
-* **Dean B** - *Initial work* - CERT Australia
+* **Dean B** - *Initial work* - CERT Australia / Australian Cyber Security Centre (ACSC)
 
 ## Known issues
 

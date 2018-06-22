@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Setup script for the CERT AU IR2Go environment. 
+Setup script for the ACSC IR2Go environment. 
 
 .DESCRIPTION
 From within a new Windows installation on a USB drive, download and run this script.
@@ -32,10 +32,13 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 ##Variables - all directories have no trailing slash
 $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
 $script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
-$tools_dir = "C:\Tools\Acquisition\Windows"				## Tools location 
-$general_dir = "C:\Tools\General"						## General items location
+$tools_dir = "T:\Tools\Acquisition\Windows"				## Tools location 
+$general_dir = "T:\Tools\General"						## General items location
 $wallpaperURL = "General/background.png"	## URL of wallpaper
 $pdfviewerURL = "General/SumatraPDF.exe"	##SumatraPDF installer
+#Sizes are in bytes please
+$win_part_size = 30000000000                            ## 30GB
+$tools_drive_letter = "T"                               ## Drive letter for tools partition
 
 ## Remove Script Locations - Arrays of URL of Script, Script description
 $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6daa1/raw/2e5e6f244af9189b81f01873c94b350ee906f8bb/reclaimWindows10.ps1", "Reclaim Windows from GITHUB")
@@ -57,9 +60,7 @@ $linuxURL = "http://mirror.exetel.com.au/pub/ubuntu/xubuntu-releases/16.04/relea
 
 ### Currently Unused Variables
 #Sizes are in bytes please
-#$win_part_size = 25000000000                            ## 25GB
 #$linux_part_size = 20000000000                          ## 20GB
-#$tools_drive_letter = "T"                               ## Drive letter for tools partition
 #$linux_drive_letter = "L"                               ## Drive letter for linux partition
 #$awstoolsURL = "http://sdk-for-net.amazonwebservices.com/latest/AWSToolsAndSDKForNet.msi" ##AWS Tools for Powershell 
 
@@ -84,6 +85,7 @@ Function downloadFile {
 	#Work out the filename
 	$tmpFile = getFileName($surl)	
 
+	Write-Host ""
 	Write-Host ("Downloading " + $tmpFile)
 	#$WebClient = New-Object System.net.WebClient
 	#$WebClient.DownloadFile($surl, "$working_dir\$tmpFile")
@@ -97,6 +99,7 @@ Function downloadFileS3 {
 	#Work out the filename
 	$tmpFile = getFileName($s3url)	
 
+	Write-Host ""
 	Write-Host ("Downloading " + $tmpFile)
 	Read-S3Object -BucketName "$aws_bucket_name" -Key "$s3url" -File "$dest\$tmpFile"
 }
@@ -105,6 +108,8 @@ Function downloadFileS3 {
 ###########
 function Unzip {
     param([string]$zipfile, [string]$outpath)
+
+    Write-Host ""
 	Write-Host ("Unzipping " + $zipfile)
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
 }
@@ -118,6 +123,7 @@ Function remoteScript($surl, $sdesc) {
 	#Download the file
 	downloadFile $surl $working_dir
 	
+	Write-Host ""
 	Write-Host "Running Script..."
 	Invoke-Expression $working_dir/$tmpFile
 
@@ -128,6 +134,7 @@ Function remoteScript($surl, $sdesc) {
 ## General Maintenance
 ###########
 Function GeneralSetup() {
+	Write-Host ""
 	Write-Host "General Setup"
 
 	#Import the AWS Powershell module
@@ -136,16 +143,24 @@ Function GeneralSetup() {
 		Install-Package -Name AWSPowerShell -force
 	}	
 
+	Write-Host ""
 	Write-Host "Setting up AWS Profile"
 	Set-AWSCredential -AccessKey $aws_bucket_key -SecretKey $aws_bucket_secret -StoreAs CertAUIR2Go
 	Initialize-AWSDefaultConfiguration -ProfileName CertAUIR2Go -Region ap-southeast-2
 	
+	Write-Host ""
 	Write-Host "Setting system sound profile"
 	Set-ItemProperty -path 'HKCU:\AppEvents\Schemes\' -name "(Default)" -value ".None"
 	
+	Write-Host ""
+	Write-Host "Disabling Auto Mount"
+	Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Servies\MountMgr\' -name "NoAutoMount" -value "1"
+
+	Write-Host ""
 	Write-Host "Setting the timezone to UTC"
 	Set-TimeZone "Coordinated Universal Time"
 	
+	Write-Host ""
 	Write-Host "Setting the Power Plan"
 	$p = gwmi -NS root\cimv2\power -Class win32_PowerPlan -Filter "ElementName = 'High performance'"
 	$p.Activate()
@@ -174,6 +189,7 @@ Function GeneralSetup() {
 ## Remove Windows 10 Apps which serve no purpose
 ###########
 Function RemoveWin10Apps {
+	Write-Host ""
 	Write-Host "Removing Windows 10 Apps..."
 	Write-Host "Removing 3D Builder"
 	Get-AppxPackage -allusers *3dbuilder* | Remove-AppxPackage
@@ -256,10 +272,10 @@ Function SetupPartitions() {
 	Write-Host "Resizing Windows 10 (Current) Partition"
 	Resize-Partition -DriveLetter C -Size $win_part_size
 	
-	Write-Host "Creating space for the Linux Disk"
-	$driveNum = (Get-Partition -DriveLetter c).DiskNumber
-	New-Partition -DiskNumber $driveNum -Size $linux_part_size -DriveLetter $linux_drive_letter -MbrType FAT32
-	Format-Volume -DriveLetter $linux_drive_letter -FileSystem FAT32
+#	Write-Host "Creating space for the Linux Disk"
+#	$driveNum = (Get-Partition -DriveLetter c).DiskNumber
+#	New-Partition -DiskNumber $driveNum -Size $linux_part_size -DriveLetter $linux_drive_letter -MbrType FAT32
+#	Format-Volume -DriveLetter $linux_drive_letter -FileSystem FAT32
 	
 	Write-Host "Creating the tools partition"
 	New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType FAT32
@@ -375,27 +391,28 @@ if(Test-Path $script_check_file){
 	Write-Host "-                    ???????????'"
 	Write-Host "-"
     Write-Host "################################################"
-    Write-Host "## Welcome to the CERT AU IR2Go setup Script. ##"
+    Write-Host "## Welcome to the ACSC IR2Go setup Script.    ##"
     Write-Host "################################################"
     Write-Host ""
     Write-Host "There are a few questions to get you started."
 
     ### Get the AWS Details
     $aws_bucket_name = Read-Host -Prompt 'AWS Bucket Name'      ##AWS Bucket Name
-    $aws_bucket_key = Read-Host -Prompt 'AWS Key'               ##AWS Bucket Key
-    $aws_bucket_secret = Read-Host -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
+    $aws_bucket_key = Read-Host -AsSecureString -Prompt 'AWS Key'               ##AWS Bucket Key
+    $aws_bucket_secret = Read-Host -AsSecureString -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
     ##### END S3 DETAILS ############
 
 
     ##Run the components
     GeneralSetup
+    SetupPartitions
     SetWallPaper
     RemoveWin10Apps
     remoteScript $reclaimWindows[0] $reclaimWindows[1]
     getTools
 
     ##Unused 
-    #SetupPartitions
+    #
 
     ##Echo done into the check file to prevent it from running again.
     Get-Date | Out-File $script_check_file
