@@ -154,7 +154,7 @@ Function GeneralSetup() {
 	
 	Write-Host ""
 	Write-Host "Disabling Auto Mount"
-	Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Servies\MountMgr\' -name "NoAutoMount" -value "1"
+	New-Item -path 'HKLM:\SYSTEM\CurrentControlSet\Servies\MountMgr\' -name "NoAutoMount" -value "1" -FORCE
 
 	Write-Host ""
 	Write-Host "Setting the timezone to UTC"
