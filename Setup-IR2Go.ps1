@@ -278,6 +278,7 @@ Function SetupPartitions() {
 #	Format-Volume -DriveLetter $linux_drive_letter -FileSystem FAT32
 	
 	Write-Host "Creating the tools partition"
+	$driveNum = (Get-Partition -DriveLetter c).DiskNumber
 	New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType FAT32
 	Format-Volume -DriveLetter $tools_drive_letter -FileSystem FAT32
 	
