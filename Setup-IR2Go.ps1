@@ -398,8 +398,10 @@ if(Test-Path $script_check_file){
 
     ### Get the AWS Details
     $aws_bucket_name = Read-Host -Prompt 'AWS Bucket Name'      ##AWS Bucket Name
-    $aws_bucket_key = Read-Host -AsSecureString -Prompt 'AWS Key'               ##AWS Bucket Key
-    $aws_bucket_secret = Read-Host -AsSecureString -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
+    $aws_bucket_keyt = Read-Host -AsSecureString -Prompt 'AWS Key'               ##AWS Bucket Key
+    $aws_bucket_key = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_keyt))
+    $aws_bucket_secrett = Read-Host -AsSecureString -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
+    $aws_bucket_secret = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_secrett))
     ##### END S3 DETAILS ############
 
 
