@@ -1,7 +1,13 @@
 <start>
 	<files>
+		<files name="Investigative">
+			<autoexpand>False</autoexpand>
+			<file name="Redline">
+				<path>T:\Tools\Acquisition\Windows\Redline\Redline.exe</path>
+			</file>
+		</files>
 		<files name="HDD">
-			<autoexpand>True</autoexpand>
+			<autoexpand>False</autoexpand>
 			<file name="Belkasoft Acquisition Tool">
 				<path>T:\Tools\Acquisition\Windows\Belkasoft Acquisition Tool\Acquisition Tool.exe</path>
 				<runcount>1</runcount>
@@ -12,7 +18,7 @@
 			</file>
 		</files>
 		<files name="RAM">
-			<autoexpand>True</autoexpand>
+			<autoexpand>False</autoexpand>
 			<file name="Belkasoft - RamCapture (x86)">
 				<path>T:\Tools\Acquisition\Windows\Belkasoft RAM Capture\32bit\RamCapture.exe</path>
 			</file>
@@ -28,9 +34,12 @@
 			<file name="Comae - Memory Acquisition Tool (x64)">
 				<path>T:\Tools\Acquisition\Windows\Comae Toolkit 3.0\x64\DumpIt.exe</path>
 			</file>
+			<file name="Redline">
+				<path>T:\Tools\Acquisition\Windows\Redline\Redline.exe</path>
+			</file>
 		</files>
 		<files name="Network">
-			<autoexpand>True</autoexpand>
+			<autoexpand>False</autoexpand>
 			<file name="Wireshark">
 				<path>T:\Tools\Acquisition\Windows\WiresharkPortable\App\Wireshark\Wireshark.exe</path>
 			</file>
@@ -42,7 +51,7 @@
 			</file>
 		</files>
 		<files name="Guides">
-			<autoexpand>True</autoexpand>
+			<autoexpand>False</autoexpand>
 			<file name="Acquisition - Belkasoft (HDD)">
 				<path>T:\Tools\General\SumatraPDF.exe</path>
 				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - Belkasoft (HDD).pdf&#x22;</parameters>

@@ -48,6 +48,7 @@ $acquisitionTools = @("Acquisition/Windows/Belkasoft Acquisition Tool.zip",
 					"Acquisition/Windows/Belkasoft RAM Capture.zip",
 					"Acquisition/Windows/Comae Toolkit 3.0.zip",
 					"Acquisition/Windows/FTK Imager Lite 3.1.1.zip",
+					"Acquisition/Windows/Redline.zip",
 					"Acquisition/Windows/WiresharkPortable.zip",
 					"Acquisition/Windows/Guides.zip")
 
