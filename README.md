@@ -39,7 +39,7 @@ The tools listed below are an example of the tools you can use. This list is not
 
 **Acquisition Files**
 * FTK Imager - https://accessdata.com/product-download
-* Redine - 
+* Redine - https://www.fireeye.com/services/freeware/redline.html
 * Comae Toolkit - https://www.comae.io
 * Belkasoft Acquisition Tool - https://www.belkasoft.com
 * Wireshark - https://www.wireshark.com
