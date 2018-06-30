@@ -27,7 +27,7 @@ The tool is designed to run on any **BASIC** type USB drive that is 64GB or larg
 The drive should be USB3.
 Support for additional USB drives is always trying to be achieved
 
-### Compatible USB Drives
+##### Compatible USB Drives
 IR2Go has been working on the following USB drives.
 * SANDISK - Extreme USB 3.0 (64GB) - SDCZ80-064G
 * Kingston DataTraveler Workspace (64GB) - DTWS/64GBBK 
