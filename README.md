@@ -1,7 +1,7 @@
 # Australian Cyber Security Centre (ACSC) - IR2Go
 
 IR2Go is an Incident Response tool kit designed to help in the acquisition of forensic artifacts such as disk, memory and network.
-The tool can be installed onto any USB drive that is over 64GB and includes primary and secondary tools, plus guides on how to perform the capture. The IR2Go tool is deployable from any computer with a internet connection and is easy to deploy.
+The tool can be installed onto any basic type USB drive that is over 64GB and includes primary and secondary tools, plus guides on how to perform the capture. The IR2Go tool is deployable from any computer with a internet connection and is easy to deploy.
 
 ## Getting Started
 
@@ -22,8 +22,15 @@ See the items below for further details
 
 #### Hardware
 
-The tool is designed to run on ANY USB drive that is 64GB or larger. (Larger will result in more room for the Tools Partition)
-It is recommended that the drive be USB3.
+The tool is designed to run on any **BASIC** type USB drive that is 64GB or larger. - See Compatible USB drives for drives.
+(Larger will result in more room for the Tools Partition)
+The drive should be USB3.
+Support for additional USB drives is always trying to be achieved
+
+### Compatible USB Drives
+IR2Go has been working on the following USB drives.
+* SANDISK - Extreme USB 3.0 (64GB) - SDCZ80-064G
+* Kingston DataTraveler Workspace (64GB) - DTWS/64GBBK 
 
 #### Download Tools
 
@@ -32,6 +39,7 @@ The tools listed below are an example of the tools you can use. This list is not
 
 **Acquisition Files**
 * FTK Imager - https://accessdata.com/product-download
+* Redine - 
 * Comae Toolkit - https://www.comae.io
 * Belkasoft Acquisition Tool - https://www.belkasoft.com
 * Wireshark - https://www.wireshark.com
@@ -125,7 +133,7 @@ DISM /apply-image /imagefile:install.wim /index:1 /ApplyDir:X:\
 BCDBOOT.EXE X:\Windows /S Y: /F ALL
 
 #If the command above fails, try 
-BCTBOOT.EXE X:\Windows /S Y:
+BCDBOOT.EXE X:\Windows /S Y:
 ```
 
 5. Install the required files to the USB Drive. (This step can be skipped if the files are added to the WIM file)
@@ -146,7 +154,7 @@ When prompted, enter your AWS S3 bucket details
 
 ## Alternative Installation
 
-The script can be run on any windows machine using the following command
+The script can be run on any Windows 10 machine using the following command
 
 ```
 powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('https://raw.githubusercontent.com/ertau/ir2go/master/Setup-IR2Go.ps1')|iex"
