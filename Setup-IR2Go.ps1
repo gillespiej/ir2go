@@ -50,7 +50,8 @@ $acquisitionTools = @("Acquisition/Windows/Belkasoft Acquisition Tool.zip",
 					"Acquisition/Windows/FTK Imager Lite 3.1.1.zip",
 					"Acquisition/Windows/Redline.zip",
 					"Acquisition/Windows/WiresharkPortable.zip",
-					"Acquisition/Windows/Guides.zip")
+					"Acquisition/Windows/Guides.zip",
+                    "Investigation/Windows/xways.zip")
 
 #additional Tools 
 $menuEXE = "Menu/PStart.exe"

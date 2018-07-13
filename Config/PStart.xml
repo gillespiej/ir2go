@@ -5,6 +5,9 @@
 			<file name="Redline">
 				<path>T:\Tools\Acquisition\Windows\Redline\Redline.exe</path>
 			</file>
+			<file name="X-Ways">
+				<path>T:\Tools\Acquisition\Windows\xways\xwforensics64.exe</path>
+			</file>
 		</files>
 		<files name="HDD">
 			<autoexpand>False</autoexpand>
