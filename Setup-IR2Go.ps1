@@ -19,8 +19,8 @@ Run the script
 
 .NOTES
 Author: Dean B <dean.bird@cert.gov.au>
-Version: 1.1
-Modified Date: 14th June 2018
+Version: 1.5
+Modified Date: 16th July 2018
 
 .LINK
 https://github.com/certau/ir2go
