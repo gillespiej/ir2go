@@ -34,11 +34,20 @@ $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
 $script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
 $tools_dir = "T:\Tools\Acquisition\Windows"				## Tools location 
 $general_dir = "T:\Tools\General"						## General items location
-$wallpaperURL = "General/background.png"	## URL of wallpaper
-$pdfviewerURL = "General/SumatraPDF.exe"	##SumatraPDF installer
+$wallpaperURL = "General/background.png"				## URL of wallpaper
+$pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 #Sizes are in bytes please
 $win_part_size = 30000000000                            ## 30GB
 $tools_drive_letter = "T"                               ## Drive letter for tools partition
+$linux_part_size = 20000000000                          ## 20GB
+$linux_drive_letter = "L"                               ## Drive letter for linux partition
+
+##Menu Selections
+$setup_tdrive = "X" 
+$setup_ldrive = " " 
+$setup_tools = "X" 
+$setup_wallpaper = "X" 
+$setup_removeapps = "X" 
 
 ## Remove Script Locations - Arrays of URL of Script, Script description
 $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6daa1/raw/2e5e6f244af9189b81f01873c94b350ee906f8bb/reclaimWindows10.ps1", "Reclaim Windows from GITHUB")
@@ -61,9 +70,6 @@ $menuConfig = "https://raw.githubusercontent.com/certau/ir2go/master/Config/PSta
 $linuxURL = "http://mirror.exetel.com.au/pub/ubuntu/xubuntu-releases/16.04/release/xubuntu-16.04.1-desktop-amd64.iso"
 
 ### Currently Unused Variables
-#Sizes are in bytes please
-#$linux_part_size = 20000000000                          ## 20GB
-#$linux_drive_letter = "L"                               ## Drive letter for linux partition
 #$awstoolsURL = "http://sdk-for-net.amazonwebservices.com/latest/AWSToolsAndSDKForNet.msi" ##AWS Tools for Powershell 
 
 ## Menu (pStart)
@@ -167,6 +173,15 @@ Function GeneralSetup() {
 	$p = gwmi -NS root\cimv2\power -Class win32_PowerPlan -Filter "ElementName = 'High performance'"
 	$p.Activate()
 	
+	Write-Host ""
+	Write-Host "Configuring BitLocker settings (If you want to use bitlocker)"
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "EnableBDEWithNoTPM" -value "1" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseAdvancedStartup" -value "1" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPM" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKey" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKeyPIN" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMPIN" -value "2" -FORCE
+	
 	#Make the directory for the scripts if required.
 	New-Item -ItemType directory -Path $working_dir
 	
@@ -269,20 +284,26 @@ Function RemoveWin10Apps {
 ## Partition Setup
 ###########
 Function SetupPartitions() {
-	Write-Host "USB Partition Setup"
+	Write-Host "Partition Setup."
+
+	if(($setup_tdrive -eq "X") -and ($setup_ldrive -eq "X")) {
+		Write-Host "Resizing Windows 10 (Current) Partition"
+		Resize-Partition -DriveLetter C -Size $win_part_size
+	}
 	
-	Write-Host "Resizing Windows 10 (Current) Partition"
-	Resize-Partition -DriveLetter C -Size $win_part_size
+	if($setup_ldrive -eq "X") {
+		Write-Host "Creating space for the Linux Disk"
+		$driveNum = (Get-Partition -DriveLetter c).DiskNumber
+		New-Partition -DiskNumber $driveNum -Size $linux_part_size -DriveLetter $linux_drive_letter -MbrType FAT32
+		Format-Volume -DriveLetter $linux_drive_letter -FileSystem FAT32
+	}
 	
-#	Write-Host "Creating space for the Linux Disk"
-#	$driveNum = (Get-Partition -DriveLetter c).DiskNumber
-#	New-Partition -DiskNumber $driveNum -Size $linux_part_size -DriveLetter $linux_drive_letter -MbrType FAT32
-#	Format-Volume -DriveLetter $linux_drive_letter -FileSystem FAT32
-	
-	Write-Host "Creating the tools partition"
-	$driveNum = (Get-Partition -DriveLetter c).DiskNumber
-	New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType ExFAT
-	Format-Volume -DriveLetter $tools_drive_letter -FileSystem FAT32
+	if($setup_tdrive -eq "X") {
+		Write-Host "Creating the tools partition"
+		$driveNum = (Get-Partition -DriveLetter c).DiskNumber
+		New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType FAT32
+		Format-Volume -DriveLetter $tools_drive_letter -FileSystem ExFAT
+	}
 	
 	#write entry in event log
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Paritions configured" 
@@ -355,19 +376,14 @@ Function GetTools() {
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Tools downloaded and installed to T Drive" 
 }
 
-
-
 ###################################################################################################
 ### Start Here
 ###################################################################################################
 
-##Check if script has previously run
-if(Test-Path $script_check_file){
-    Write-Host "Script already run..."
-    Write-Host "Exiting..."
-}Else{
-    ##Introductions
-
+Function DisplayMenu() {
+	##Introductions
+	Clear-Host
+	
 	Write-Host "-"
 	Write-Host "-                 _cc??CCCCCCCCC6c/"
 	Write-Host "-               )'        ?CCCCCCCCCcc"
@@ -393,33 +409,142 @@ if(Test-Path $script_check_file){
 	Write-Host "-               )?4CCCCCCCCCCCCCCCP?"
 	Write-Host "-                    ???????????'"
 	Write-Host "-"
-    Write-Host "################################################"
-    Write-Host "## Welcome to the ACSC IR2Go setup Script.    ##"
-    Write-Host "################################################"
-    Write-Host ""
-    Write-Host "There are a few questions to get you started."
+	Write-Host "################################################"
+	Write-Host "## Welcome to the ACSC IR2Go setup Script.    ##"
+	Write-Host "################################################"
+	Write-Host ""
+	Write-Host "There are a few questions to get you started."
 
-    ### Get the AWS Details
-    $aws_bucket_name = Read-Host -Prompt 'AWS Bucket Name'      ##AWS Bucket Name
-    $aws_bucket_keyt = Read-Host -AsSecureString -Prompt 'AWS Key'               ##AWS Bucket Key
-    $aws_bucket_key = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_keyt))
-    $aws_bucket_secrett = Read-Host -AsSecureString -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
-    $aws_bucket_secret = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_secrett))
-    ##### END S3 DETAILS ############
+	Write-Host "+--------------------------------+-----------------------------------------+"
+	Write-Host "1. [$setup_tdrive] Setup T Drive (Tools) and install Tools to T:\ "
+	Write-Host "2. [$setup_ldrive] Setup L Drive (Linux) "
+	Write-Host "3. [$setup_tools] Install / Update Tools "
+	Write-Host "4. [$setup_wallpaper] Install Wallpaper "
+	Write-Host "5. [$setup_removeapps] Remove Windows 10 Apps "
+	Write-Host ""
+	Write-Host "10. Toggle All On"
+	Write-Host "11. Toggle All Off"
+	Write-Host "Q. Quit"
+	Write-Host ""
+	Write-Host "Enter. Run Script"
+	Write-Host "+--------------------------------+-----------------------------------------+"
+} ##DisplayMenu
 
-
-    ##Run the components
-    GeneralSetup
-    SetupPartitions
-    SetWallPaper
-    RemoveWin10Apps
-    remoteScript $reclaimWindows[0] $reclaimWindows[1]
-    getTools
-
-    ##Unused 
-    #
-
-    ##Echo done into the check file to prevent it from running again.
-    Get-Date | Out-File $script_check_file
+##Check if running as Admin - If not. Dislay error and exit.
+& {
+  $wid=[System.Security.Principal.WindowsIdentity]::GetCurrent()
+  $prp=new-object System.Security.Principal.WindowsPrincipal($wid)
+  $adm=[System.Security.Principal.WindowsBuiltInRole]::Administrator
+  $IsAdmin=$prp.IsInRole($adm)
+  if ($IsAdmin -eq $false)
+  {
+	(get-host).UI.RawUI.Backgroundcolor="DarkRed"
+	clear-host
+	write-host ""
+	write-host ""
+	write-host "             _                                      _"
+	write-host "        ~0  (_|  . - ' - . _ . - ' - . _ . - ' - . |_)  O"
+	write-host "       |(_~|^~~|                                  |~~^|~_)|"
+	write-host "       TT/_ T'T                                    T'T _\HH"
+	write-host "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+	write-host "Script needs to be run as admin. "
+	write-host "Please close this box and re-open as administrator!"
+	exit
+  }
 }
 
+while(($todo -ne "q") -and ($todo -ne "")) {
+	DisplayMenu
+	$todo = Read-Host -Prompt "Please make a selection"
+	switch ($todo) {
+		1 {			
+			if($setup_tdrive -eq "X") {
+				$setup_tdrive = " "		
+			} else {
+				$setup_tdrive = "X"
+				$setup_partitions = "X"
+			}
+		}
+		2 {			
+			if($setup_ldrive -eq "X") {
+				$setup_ldrive = " "		
+			} else {
+				$setup_ldrive = "X"
+				$setup_partitions = "X"
+			}
+		}
+		3 {			
+			if($setup_tools -eq "X") {
+				$setup_tools = " "		
+			} else {
+				$setup_tools = "X"
+			}
+		}
+		4 {			
+			if($setup_wallpaper -eq "X") {
+				$setup_wallpaper = " "		
+			} else {
+				$setup_wallpaper = "X"
+			}
+		}
+		5 {			
+			if($setup_removeapps -eq "X") {
+				$setup_removeapps = " "		
+			} else {
+				$setup_removeapps = "X"
+			}
+		}
+		10 {			
+			$setup_partitions = "X" 
+			$setup_tdrive = "X" 
+			$setup_ldrive = "X" 
+			$setup_tools = "X" 
+			$setup_wallpaper = "X" 
+			$setup_removeapps = "X" 
+		}
+		11 {			
+			$setup_partitions = " " 
+			$setup_tdrive = " " 
+			$setup_ldrive = " " 
+			$setup_tools = " " 
+			$setup_wallpaper = " " 
+			$setup_removeapps = " " 
+		}
+	} ##Switch Todo
+}
+
+if($todo -ne "q") {
+
+	### Get the AWS Details
+	$aws_bucket_name = Read-Host -Prompt 'AWS Bucket Name'      ##AWS Bucket Name
+	$aws_bucket_keyt = Read-Host -AsSecureString -Prompt 'AWS Key'               ##AWS Bucket Key
+	$aws_bucket_key = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_keyt))
+	$aws_bucket_secrett = Read-Host -AsSecureString -Prompt 'AWS Secret Key' ##AWS Bucket Secret Key
+	$aws_bucket_secret = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_secrett))
+	##### END S3 DETAILS ############
+
+
+	##Run the components
+	GeneralSetup ##Everyone gets the general setup
+	remoteScript $reclaimWindows[0] $reclaimWindows[1]
+
+	##Partitions
+	if(($setup_tdrive -eq "X") -and ($setup_ldrive -eq "X")) {
+		SetupPartitions
+	} ##if partitions
+
+	##Wallpaper
+	if($setup_wallpaper -eq "X") {
+		SetWallPaper
+	} ##if partitions
+
+	##Clean up Win10's act
+	if($setup_removeapps -eq "X") {
+		RemoveWin10Apps
+	} ##if partitions
+
+	##Install Tools
+	if($setup_tools -eq "X") {
+		getTools
+	} ##if partitions
+}## todo
