@@ -36,7 +36,7 @@ $tools_drive_letter = "C"                               ## Drive letter for tool
 $linux_part_size = 20000000000                          ## 20GB
 $linux_drive_letter = "L"                               ## Drive letter for linux partition
 $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
-$script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
+$script_check_file = "$working_dir\acscrocks.txt"       ## Check file to see if script has run previously.
 $tools_dir = $tools_drive_letter":\Tools\Acquisition\Windows"				## Tools location 
 $general_dir = $tools_drive_letter":\Tools\General"						## General items location
 $wallpaperURL = "General/background.png"				## URL of wallpaper
@@ -449,6 +449,7 @@ Function DisplayMenu() {
 	write-host "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 	write-host "Script needs to be run as admin. "
 	write-host "Please close this box and re-open as administrator!"
+    Read-Host -Prompt "Press enter to exit"
 	exit
   }
 }
@@ -527,8 +528,11 @@ if($todo -ne "q") {
 
 
 	##Run the components
-	GeneralSetup ##Everyone gets the general setup
-	remoteScript $reclaimWindows[0] $reclaimWindows[1]
+    if(Test-Path $script_check_file){
+    	GeneralSetup ##Everyone gets the general setup first time around
+    	remoteScript $reclaimWindows[0] $reclaimWindows[1]
+        Get-Date | Out-File $script_check_file
+    }
 
 	##Partitions
 	if(($setup_tdrive -eq "X") -and ($setup_ldrive -eq "X")) {
