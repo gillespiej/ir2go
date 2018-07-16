@@ -30,19 +30,19 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 ##Variables - all directories have no trailing slash
-$working_dir = "C:\IR2Go" 								## Working directory for files and scripts
-$script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
-$tools_dir = "T:\Tools\Acquisition\Windows"				## Tools location 
-$general_dir = "T:\Tools\General"						## General items location
-$wallpaperURL = "General/background.png"				## URL of wallpaper
-$pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 #Sizes are in bytes please
 $win_part_size = 30000000000                            ## 30GB
-$tools_drive_letter = "T"                               ## Drive letter for tools partition
+$tools_drive_letter = "C"                               ## Drive letter for tools partition
 $linux_part_size = 20000000000                          ## 20GB
 $linux_drive_letter = "L"                               ## Drive letter for linux partition
+$working_dir = "C:\IR2Go" 								## Working directory for files and scripts
+$script_check_file = "$working_dir\certrocks.txt"       ## Check file to see if script has run previously.
+$tools_dir = $tools_drive_letter":\Tools\Acquisition\Windows"				## Tools location 
+$general_dir = $tools_drive_letter":\Tools\General"						## General items location
+$wallpaperURL = "General/background.png"				## URL of wallpaper
+$pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 
-##Menu Selections
+##Menu Selections (X = selected)
 $setup_tdrive = "X" 
 $setup_ldrive = " " 
 $setup_tools = "X" 
@@ -459,10 +459,12 @@ while(($todo -ne "q") -and ($todo -ne "")) {
 	switch ($todo) {
 		1 {			
 			if($setup_tdrive -eq "X") {
-				$setup_tdrive = " "		
+				$setup_tdrive = " "	
+                $tools_drive_letter = "C" 	
 			} else {
 				$setup_tdrive = "X"
 				$setup_partitions = "X"
+                $tools_drive_letter = "T" 
 			}
 		}
 		2 {			
