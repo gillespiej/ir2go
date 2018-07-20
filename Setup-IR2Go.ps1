@@ -302,7 +302,7 @@ Function SetupPartitions() {
 		Write-Host "Creating the tools partition"
 		$driveNum = (Get-Partition -DriveLetter c).DiskNumber
 		New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType FAT32
-		Format-Volume -DriveLetter $tools_drive_letter -FileSystem ExFAT
+		Format-Volume -DriveLetter $tools_drive_letter -FileSystem NTFS
 	}
 	
 	#write entry in event log

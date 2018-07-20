@@ -31,6 +31,7 @@ Support for additional USB drives is always trying to be achieved
 IR2Go has been working on the following USB drives.
 * SANDISK - Extreme USB 3.0 (64GB) - SDCZ80-064G
 * Kingston DataTraveler Workspace (64GB) - DTWS/64GBBK 
+* Seagate Expansion (2TB) - STEA2000400
 
 #### Download Tools
 
