@@ -386,7 +386,7 @@ Function GetTools() {
 	
 	#Make the directory for the General files.
 	##Run the components
-    if(-Not (Test-Path $general_dir){
+    if(-Not (Test-Path $general_dir)){
 		New-Item -ItemType directory -Path $general_dir
 	}
 
