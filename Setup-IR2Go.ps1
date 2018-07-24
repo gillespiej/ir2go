@@ -365,6 +365,10 @@ Function SetWallPaper() {
 ###########
 Function GetTools() {
 	##Variables
+	##Check if this is an Update
+	if((Test-Path "T:\Tools\General\PStart.xml") -and (Test-Path $script_check_file)){
+		$tools_drive_letter = "T"
+	}
 	$tools_dir = "${tools_drive_letter}:${tools_sub_dir}"
 	$general_dir = "${tools_drive_letter}:${general_sub_dir}"
 
