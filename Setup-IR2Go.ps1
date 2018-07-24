@@ -37,8 +37,8 @@ $linux_part_size = 20000000000                          ## 20GB
 $linux_drive_letter = "L"                               ## Drive letter for linux partition
 $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
 $script_check_file = "$working_dir\acscrocks.txt"       ## Check file to see if script has run previously.
-$tools_dir = $tools_drive_letter':\Tools\Acquisition\Windows'				## Tools location 
-$general_dir = $tools_drive_letter':\Tools\General'						## General items location
+$tools_sub_dir = "\Tools\Acquisition\Windows"				## Tools location 
+$general_sub_dir = "\Tools\General"							## General items location
 $wallpaperURL = "General/background.png"				## URL of wallpaper
 $pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 
@@ -360,6 +360,10 @@ Function SetWallPaper() {
 ## Get Tools
 ###########
 Function GetTools() {
+	##Variables
+	$tools_dir = "${tools_drive_letter}:${tools_sub_dir}"
+	$general_dir = "${tools_drive_letter}:${general_sub_dir}"
+
 	#Remove the existing folder if it exists
 	if(Test-Path $tools_dir){
 		Write-Host "Removing existing tools folder"
