@@ -401,6 +401,11 @@ Function GetTools() {
 	##Install the menu
 	downloadFileS3 "$menuEXE" "$general_dir"
 	downloadFile "$menuConfig" "$general_dir"
+
+	#Update the paths in the XML file
+	$menuConfig = getFileName($menuConfig)
+	(Get-Content $general_dir\$menuConfig).replace('[[DRIVE]]\', '$tools_drive_letter') | Set-Content $general_dir\$menuConfig
+
 	#Start the menu
 	$menuName = getFileName($menuEXE)
 	Write-Host "Starting menu...."
@@ -462,8 +467,8 @@ Function DisplayMenu() {
 	Write-Host "3. [$setup_tools] Install / Update Tools "
 	Write-Host "4. [$setup_wallpaper] Install Wallpaper "
 	Write-Host "5. [$setup_removeapps] Remove Windows 10 Apps "
-	Write-Host ""
-	Write-Host "6. [$setup_enablebitlocker] Enable Bitlocker on OS and Tools partition."
+#	Write-Host ""
+#	Write-Host "6. [$setup_enablebitlocker] Enable Bitlocker on OS and Tools partition."
 	Write-Host ""
 	Write-Host "10. Toggle All On"
 	Write-Host "11. Toggle All Off"

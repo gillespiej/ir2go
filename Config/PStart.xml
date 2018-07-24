@@ -3,91 +3,91 @@
 		<files name="Investigative">
 			<autoexpand>False</autoexpand>
 			<file name="Redline">
-				<path>T:\Tools\Acquisition\Windows\Redline\Redline.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Redline\Redline.exe</path>
 			</file>
 			<file name="X-Ways">
-				<path>T:\Tools\Acquisition\Windows\xways\xwforensics64.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\xways\xwforensics64.exe</path>
 			</file>
 		</files>
 		<files name="HDD">
 			<autoexpand>False</autoexpand>
 			<file name="Belkasoft Acquisition Tool">
-				<path>T:\Tools\Acquisition\Windows\Belkasoft Acquisition Tool\Acquisition Tool.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Belkasoft Acquisition Tool\Acquisition Tool.exe</path>
 				<runcount>1</runcount>
 				<rundate>2018/04/07 22:39:59</rundate>
 			</file>
 			<file name="FTK Imager">
-				<path>T:\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
 			</file>
 		</files>
 		<files name="RAM">
 			<autoexpand>False</autoexpand>
 			<file name="Belkasoft - RamCapture (x86)">
-				<path>T:\Tools\Acquisition\Windows\Belkasoft RAM Capture\32bit\RamCapture.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Belkasoft RAM Capture\32bit\RamCapture.exe</path>
 			</file>
 			<file name="Belkasoft - RamCapture (x64)">
-				<path>T:\Tools\Acquisition\Windows\Belkasoft RAM Capture\64bit\RamCapture64.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Belkasoft RAM Capture\64bit\RamCapture64.exe</path>
 			</file>
 			<file name="FTK Imager">
-				<path>T:\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
 			</file>
 			<file name="Comae - Memory Acquisition Tool (x86)">
-				<path>T:\Tools\Acquisition\Windows\Comae Toolkit 3.0\x86\DumpIt.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Comae Toolkit 3.0\x86\DumpIt.exe</path>
 			</file>
 			<file name="Comae - Memory Acquisition Tool (x64)">
-				<path>T:\Tools\Acquisition\Windows\Comae Toolkit 3.0\x64\DumpIt.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Comae Toolkit 3.0\x64\DumpIt.exe</path>
 			</file>
 			<file name="Redline">
-				<path>T:\Tools\Acquisition\Windows\Redline\Redline.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\Redline\Redline.exe</path>
 			</file>
 		</files>
 		<files name="Network">
 			<autoexpand>False</autoexpand>
 			<file name="Wireshark">
-				<path>T:\Tools\Acquisition\Windows\WiresharkPortable\App\Wireshark\Wireshark.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\WiresharkPortable\App\Wireshark\Wireshark.exe</path>
 			</file>
 			<file name="Wireshark - Alternative EXE Name">
-				<path>T:\Tools\Acquisition\Windows\WiresharkPortable\App\Wireshark\Wireshark2.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\WiresharkPortable\App\Wireshark\Wireshark2.exe</path>
 			</file>
 			<file name="WinPcap installer">
-				<path>T:\Tools\Acquisition\Windows\WiresharkPortable\WinPcap_4_1_3.exe</path>
+				<path>[[DRIVE]]\Tools\Acquisition\Windows\WiresharkPortable\WinPcap_4_1_3.exe</path>
 			</file>
 		</files>
 		<files name="Guides">
 			<autoexpand>False</autoexpand>
 			<file name="Acquisition - Belkasoft (HDD)">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - Belkasoft (HDD).pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acquisition - Belkasoft (HDD).pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
 			<file name="Acquisition - Belkasoft (RAM)">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - Belkasoft (RAM).pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acquisition - Belkasoft (RAM).pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
 			<file name="Acquisition - Comae (RAM)">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - Comae (RAM).pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acquisition - Comae (RAM).pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
 			<file name="Acquisition - FTK Imager (HDD)">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - FTK Imager (HDD).pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acquisition - FTK Imager (HDD).pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
 			<file name="Acquisition - FTK Imager (RAM)">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acquisition - FTK Imager (RAM).pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acquisition - FTK Imager (RAM).pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
 			<file name="Acqusition - Wireshark">
-				<path>T:\Tools\General\SumatraPDF.exe</path>
-				<parameters>&#x22;T:\Tools\Acquisition\Windows\Guides\Acqusition - Wireshark.pdf&#x22;</parameters>
+				<path>[[DRIVE]]\Tools\General\SumatraPDF.exe</path>
+				<parameters>&#x22;[[DRIVE]]\Tools\Acquisition\Windows\Guides\Acqusition - Wireshark.pdf&#x22;</parameters>
 				<runcount>3</runcount>
 				<rundate>2018/04/12 04:56:59</rundate>
 			</file>
