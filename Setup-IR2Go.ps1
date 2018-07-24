@@ -20,7 +20,7 @@ Run the script
 .NOTES
 Author: Dean B <dean.bird@cert.gov.au>
 Version: 1.5
-Modified Date: 16th July 2018
+Modified Date: 25th July 2018
 
 .LINK
 https://github.com/certau/ir2go
@@ -513,11 +513,9 @@ while(($todo -ne "q") -and ($todo -ne "")) {
 		1 {			
 			if($setup_tdrive -eq "X") {
 				$setup_tdrive = " "	
-                $tools_drive_letter = "C" 	
 			} else {
 				$setup_tdrive = "X"
 				$setup_partitions = "X"
-                $tools_drive_letter = "T" 
 			}
 		}
 		2 {			
