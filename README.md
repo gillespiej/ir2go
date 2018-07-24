@@ -158,7 +158,7 @@ When prompted, enter your AWS S3 bucket details
 The script can be run on any Windows 10 machine using the following command
 
 ```
-powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('https://raw.githubusercontent.com/ertau/ir2go/master/Setup-IR2Go.ps1')|iex"
+powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('https://raw.githubusercontent.com/certau/ir2go/master/Setup-IR2Go.ps1')|iex"
 ```
 
 ## Authors

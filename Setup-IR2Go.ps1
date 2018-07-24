@@ -320,7 +320,12 @@ Function EnableBitlocker() {
 
 	if($setup_tdrive -eq "X") {
 		Write-Host "Enabling Bitlocker on T Drive"
-		##Code here
+		##OS Drive
+		##Request a password
+		$t_bl_key = Read-Host -AsSecureString -Prompt 'BitLocker Password (T Drive)'               ##T Bitlocker Password
+
+		##Enable BitLocker on drive
+		Enable-BitLocker -MountPoint "T:" -EncryptionMethod Aes128 Add-BitLockerKeyProtector -Password $os_bl_key -RecoveryKeyPath "$working_dir" -RecoveryKeyProtector
 	}
 	
 	Write-Host ""
@@ -333,10 +338,9 @@ Function EnableBitlocker() {
 	##Enable BitLocker on drive
 	Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes128 Add-BitLockerKeyProtector -Password $os_bl_key -RecoveryKeyPath "$working_dir" -RecoveryKeyProtector
 
-
 	
 	#write entry in event log
-	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Paritions configured" 
+	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Bitlocker Enabled" 
 }
 
 
