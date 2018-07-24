@@ -599,6 +599,11 @@ if($todo -ne "q") {
 
 	##Partitions
 	if(($setup_tdrive -eq "X") -or ($setup_ldrive -eq "X")) {
+		if($setup_tdrive -eq "X") {
+            $tools_drive_letter = "T" 	
+		} else {
+            $tools_drive_letter = "C" 
+		}
 		SetupPartitions
 	} ##if partitions
 
