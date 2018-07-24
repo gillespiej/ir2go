@@ -37,8 +37,8 @@ $linux_part_size = 20000000000                          ## 20GB
 $linux_drive_letter = "L"                               ## Drive letter for linux partition
 $working_dir = "C:\IR2Go" 								## Working directory for files and scripts
 $script_check_file = "$working_dir\acscrocks.txt"       ## Check file to see if script has run previously.
-$tools_dir = $tools_drive_letter":\Tools\Acquisition\Windows"				## Tools location 
-$general_dir = $tools_drive_letter":\Tools\General"						## General items location
+$tools_dir = "$tools_drive_letter:\Tools\Acquisition\Windows"				## Tools location 
+$general_dir = "$tools_drive_letter:\Tools\General"						## General items location
 $wallpaperURL = "General/background.png"				## URL of wallpaper
 $pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 
@@ -48,6 +48,7 @@ $setup_ldrive = " "
 $setup_tools = "X" 
 $setup_wallpaper = "X" 
 $setup_removeapps = "X" 
+$setup_enablebitlocker = "X" 
 
 ## Remove Script Locations - Arrays of URL of Script, Script description
 $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6daa1/raw/2e5e6f244af9189b81f01873c94b350ee906f8bb/reclaimWindows10.ps1", "Reclaim Windows from GITHUB")
@@ -144,17 +145,6 @@ Function remoteScript($surl, $sdesc) {
 Function GeneralSetup() {
 	Write-Host ""
 	Write-Host "General Setup"
-
-	#Import the AWS Powershell module
-	if(!(Get-InstalledModule | Where-Object Name -eq AWSPowerShell)){
-		Write-Host "Importing AWS Powershell module"
-		Install-Package -Name AWSPowerShell -force
-	}	
-
-	Write-Host ""
-	Write-Host "Setting up AWS Profile"
-	Set-AWSCredential -AccessKey $aws_bucket_key -SecretKey $aws_bucket_secret -StoreAs CertAUIR2Go
-	Initialize-AWSDefaultConfiguration -ProfileName CertAUIR2Go -Region ap-southeast-2
 	
 	Write-Host ""
 	Write-Host "Setting system sound profile"
@@ -172,15 +162,6 @@ Function GeneralSetup() {
 	Write-Host "Setting the Power Plan"
 	$p = gwmi -NS root\cimv2\power -Class win32_PowerPlan -Filter "ElementName = 'High performance'"
 	$p.Activate()
-	
-	Write-Host ""
-	Write-Host "Configuring BitLocker settings (If you want to use bitlocker)"
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "EnableBDEWithNoTPM" -value "1" -FORCE
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseAdvancedStartup" -value "1" -FORCE
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPM" -value "2" -FORCE
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKey" -value "2" -FORCE
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKeyPIN" -value "2" -FORCE
-	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMPIN" -value "2" -FORCE
 	
 	#Make the directory for the scripts if required.
 	New-Item -ItemType directory -Path $working_dir
@@ -202,6 +183,20 @@ Function GeneralSetup() {
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "General setup script - General setup complete" 
 }
 
+## AWS Setup
+###########
+Function SetupAWS {
+	#Import the AWS Powershell module
+	if(!(Get-InstalledModule | Where-Object Name -eq AWSPowerShell)){
+		Write-Host "Importing AWS Powershell module"
+		Install-Package -Name AWSPowerShell -force
+	}	
+
+	Write-Host ""
+	Write-Host "Setting up AWS Profile"
+	Set-AWSCredential -AccessKey $aws_bucket_key -SecretKey $aws_bucket_secret -StoreAs CertAUIR2Go
+	Initialize-AWSDefaultConfiguration -ProfileName CertAUIR2Go -Region ap-southeast-2
+} ## Setup AWS
 
 ## Remove Windows 10 Apps which serve no purpose
 ###########
@@ -262,8 +257,8 @@ Function RemoveWin10Apps {
 	Write-Host "Removing Photos"
 	Get-AppxPackage -allusers *photos* | Remove-AppxPackage
 	
-	Write-Host "Removing Store"
-	Get-AppxPackage -allusers *windowsstore* | Remove-AppxPackage
+#	Write-Host "Removing Store"
+#	Get-AppxPackage -allusers *windowsstore* | Remove-AppxPackage
 	
 	Write-Host "Removing Bing Sports"
 	Get-AppxPackage -allusers *bingsports* | Remove-AppxPackage
@@ -304,6 +299,41 @@ Function SetupPartitions() {
 		New-Partition -DiskNumber $driveNum -UseMaximumSize -DriveLetter $tools_drive_letter -MbrType FAT32
 		Format-Volume -DriveLetter $tools_drive_letter -FileSystem NTFS
 	}
+	
+	#write entry in event log
+	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Paritions configured" 
+}
+
+## Enable Bitlocker
+###########
+Function EnableBitlocker() {
+	Write-Host "Turning on Bitlocker"
+
+	Write-Host ""
+	Write-Host "Configuring BitLocker settings"
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "EnableBDEWithNoTPM" -value "1" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseAdvancedStartup" -value "1" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPM" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKey" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMKeyPIN" -value "2" -FORCE
+	New-Item -path 'HKLM:\SOFTWARE\Policies\Microsoft\FVE\' -name "UseTPMPIN" -value "2" -FORCE
+
+	if($setup_tdrive -eq "X") {
+		Write-Host "Enabling Bitlocker on T Drive"
+		##Code here
+	}
+	
+	Write-Host ""
+	Write-Host "Enabling Bitlocker on OS Drive"
+	
+	##OS Drive
+	##Request a password
+	$os_bl_key = Read-Host -AsSecureString -Prompt 'BitLocker Password (OS Drive)'               ##OS Bitlocker Password
+
+	##Enable BitLocker on drive
+	Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes128 Add-BitLockerKeyProtector -Password $os_bl_key -RecoveryKeyPath "$working_dir" -RecoveryKeyProtector
+
+
 	
 	#write entry in event log
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "Paritions configured" 
@@ -351,8 +381,11 @@ Function GetTools() {
 	} 
 	
 	#Make the directory for the General files.
-	New-Item -ItemType directory -Path $general_dir
-	
+	##Run the components
+    if(-Not (Test-Path $general_dir){
+		New-Item -ItemType directory -Path $general_dir
+	}
+
 	#Install Sumartra PDF Viewer
 	Write-Host "Installing Samartra PDF Viewer"
 	downloadFileS3 "$pdfviewerURL" "$general_dir"
@@ -421,6 +454,8 @@ Function DisplayMenu() {
 	Write-Host "3. [$setup_tools] Install / Update Tools "
 	Write-Host "4. [$setup_wallpaper] Install Wallpaper "
 	Write-Host "5. [$setup_removeapps] Remove Windows 10 Apps "
+	Write-Host ""
+	Write-Host "6. [$setup_enablebitlocker] Enable Bitlocker on OS and Tools partition."
 	Write-Host ""
 	Write-Host "10. Toggle All On"
 	Write-Host "11. Toggle All Off"
@@ -497,6 +532,13 @@ while(($todo -ne "q") -and ($todo -ne "")) {
 				$setup_removeapps = "X"
 			}
 		}
+		6 {			
+			if($setup_enablebitlocker -eq "X") {
+				$setup_enablebitlocker = " "		
+			} else {
+				$setup_enablebitlocker = "X"
+			}
+		}
 		10 {			
 			$setup_partitions = "X" 
 			$setup_tdrive = "X" 
@@ -504,6 +546,7 @@ while(($todo -ne "q") -and ($todo -ne "")) {
 			$setup_tools = "X" 
 			$setup_wallpaper = "X" 
 			$setup_removeapps = "X" 
+			$setup_enablebitlocker = "X"
 		}
 		11 {			
 			$setup_partitions = " " 
@@ -512,6 +555,7 @@ while(($todo -ne "q") -and ($todo -ne "")) {
 			$setup_tools = " " 
 			$setup_wallpaper = " " 
 			$setup_removeapps = " " 
+			$setup_enablebitlocker = " "
 		}
 	} ##Switch Todo
 }
@@ -526,6 +570,8 @@ if($todo -ne "q") {
 	$aws_bucket_secret = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($aws_bucket_secrett))
 	##### END S3 DETAILS ############
 
+	##Setup AWS
+	SetupAWS
 
 	##Run the components
     if(Test-Path $script_check_file){
@@ -535,8 +581,13 @@ if($todo -ne "q") {
     }
 
 	##Partitions
-	if(($setup_tdrive -eq "X") -and ($setup_ldrive -eq "X")) {
+	if(($setup_tdrive -eq "X") -or ($setup_ldrive -eq "X")) {
 		SetupPartitions
+	} ##if partitions
+
+	##Bitlocker
+	if($setup_enablebitlocker -eq "X") {
+		EnableBitlocker
 	} ##if partitions
 
 	##Wallpaper
