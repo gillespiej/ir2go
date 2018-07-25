@@ -408,7 +408,7 @@ Function GetTools() {
 
 	#Update the paths in the XML file
 	$menuConfig = getFileName($menuConfig)
-	(Get-Content $general_dir\$menuConfig).replace('[[DRIVE]]\', '$tools_drive_letter') | Set-Content $general_dir\$menuConfig
+	(Get-Content $general_dir\$menuConfig).replace("XX", "${tools_drive_letter}:") | Set-Content $general_dir\$menuConfig
 
 	#Start the menu
 	$menuName = getFileName($menuEXE)
