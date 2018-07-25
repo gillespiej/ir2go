@@ -43,12 +43,12 @@ $wallpaperURL = "General/background.png"				## URL of wallpaper
 $pdfviewerURL = "General/SumatraPDF.exe"				##SumatraPDF installer
 
 ##Menu Selections (X = selected)
-$setup_tdrive = "X" 
+$setup_tdrive = " " 
 $setup_ldrive = " " 
 $setup_tools = "X" 
 $setup_wallpaper = "X" 
 $setup_removeapps = "X" 
-$setup_enablebitlocker = "X" 
+$setup_enablebitlocker = " " 
 
 ## Remove Script Locations - Arrays of URL of Script, Script description
 $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6daa1/raw/2e5e6f244af9189b81f01873c94b350ee906f8bb/reclaimWindows10.ps1", "Reclaim Windows from GITHUB")
@@ -175,9 +175,6 @@ Function GeneralSetup() {
 	$pagefile.MaximumSize = 0;
 	$pagefile.Put();
 	$pagefile.Delete();
-
-	#Add us as a Source in the application Event Log
-	New-EventLog -LogName Application -Source "CERTAU"
 	
 	#write entry in event log
 	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "General setup script - General setup complete" 
@@ -587,6 +584,9 @@ if($todo -ne "q") {
 
 	##Setup AWS
 	SetupAWS
+
+    #Add us as a Source in the application Event Log
+    New-EventLog -LogName Application -Source "CERTAU"
 
 	##Run the components
     if(Test-Path $script_check_file){
