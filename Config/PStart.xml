@@ -17,7 +17,7 @@
 				<rundate>2018/04/07 22:39:59</rundate>
 			</file>
 			<file name="FTK Imager">
-				<path>XX\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
+				<path>XX\Tools\Acquisition\Windows\FTK Imager Lite\FTK Imager.exe</path>
 			</file>
 		</files>
 		<files name="RAM">
@@ -29,7 +29,7 @@
 				<path>XX\Tools\Acquisition\Windows\Belkasoft RAM Capture\64bit\RamCapture64.exe</path>
 			</file>
 			<file name="FTK Imager">
-				<path>XX\Tools\Acquisition\Windows\FTK Imager Lite 3.1.1\FTK Imager.exe</path>
+				<path>XX\Tools\Acquisition\Windows\FTK Imager Lite\FTK Imager.exe</path>
 			</file>
 			<file name="Comae - Memory Acquisition Tool (x86)">
 				<path>XX\Tools\Acquisition\Windows\Comae Toolkit 3.0\x86\DumpIt.exe</path>

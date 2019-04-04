@@ -18,9 +18,9 @@ Run the script
 ./Setup-IR2Go.ps1
 
 .NOTES
-Author: Dean B <dean.bird@cert.gov.au>
-Version: 1.5
-Modified Date: 25th July 2018
+Author: Dean B <dean.bird@defence.gov.au>
+Version: 1.6
+Modified Date: 4th April 2019
 
 .LINK
 https://github.com/certau/ir2go
@@ -57,7 +57,7 @@ $reclaimWindows = @("https://gist.githubusercontent.com/alirobe/7f3b34ad89a159e6
 $acquisitionTools = @("Acquisition/Windows/Belkasoft Acquisition Tool.zip", 
 					"Acquisition/Windows/Belkasoft RAM Capture.zip",
 					"Acquisition/Windows/Comae Toolkit 3.0.zip",
-					"Acquisition/Windows/FTK Imager Lite 3.1.1.zip",
+					"Acquisition/Windows/FTK Imager Lite.zip",
 					"Acquisition/Windows/Redline.zip",
 					"Acquisition/Windows/WiresharkPortable.zip",
 					"Acquisition/Windows/Guides.zip",
@@ -177,7 +177,7 @@ Function GeneralSetup() {
 	$pagefile.Delete();
 	
 	#write entry in event log
-	Write-EventLog -LogName "Application" -Source "CERTAU" -EventID 10 -EntryType Information -Message "General setup script - General setup complete" 
+	Write-EventLog -LogName "Application" -Source "ACSCAU" -EventID 10 -EntryType Information -Message "General setup script - General setup complete" 
 }
 
 ## AWS Setup
