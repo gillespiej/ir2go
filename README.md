@@ -5,10 +5,10 @@ The tool can be installed onto any basic type USB drive that is over 64GB and in
 
 ## Getting Started
 
-1. Install windows onto USB drive. 
+1. Install windows onto USB drive
 2. Run script
 3. Coffee
-4. Respond to incident.
+4. Respond to incident
 
 ### Prerequisites
 
@@ -40,17 +40,17 @@ The tools listed below are an example of the tools you can use. This list is not
 
 **Acquisition Files**
 * FTK Imager - https://accessdata.com/product-download
-* Redine - https://www.fireeye.com/services/freeware/redline.html
-* Comae Toolkit - https://www.comae.io
+* Redline - https://www.fireeye.com/services/freeware/redline.html
+* Comae Toolkit - https://www.comae.com
 * Belkasoft Acquisition Tool - https://www.belkasoft.com
-* Wireshark - https://www.wireshark.com
+* WireShark - https://www.wireshark.com
 
 **Other Utilities**
 * PStart Menu - http://www.pegtop.net/start/
 * SumatraPDF - https://www.sumatrapdfreader.org/free-pdf-reader.html
 
 Each tool should run without needing to be installed and will need to be zipped ready for deployment.  
-There is one tool per zip file and the structure of the zip file should reflect. (An example is provided aswell)
+There is one tool per zip file and the structure of the zip file should reflect. (An example is provided as well)
 
 ```
 Root of ZIP/ 
@@ -96,7 +96,7 @@ _The following steps need to be completed on a windows machine_
 
 1. A install.wim file needs to be obtained from the installation media of a Windows 10 Environment. A Windows 10 installation disk can be created using the Windows 10 Media Creation Tool. (You may need to extract the WIM from a ESD File)
 
-2. Partition the USB Drive -(In the example below, Disk 1 is the USB drive)_
+2. Partition the USB Drive -(In the example below, Disk 1 is the USB drive)
 ```
 #Start Diskpart
 diskpart
@@ -169,4 +169,4 @@ powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.Cr
 
 Feedback is always welcome, however the following issues may occur.
 
-* The script may fail due to being unable to resize the windows partition. The script needs to be able to resize the primary windows partition to 20GB. if it can not do this, the script will continue to run, but will fail. 
+* The script may fail due to being unable to resize the windows partition. The script needs to be able to resize the primary windows partition to 20GB. If it cannot do this, the script will continue to run, but will fail. 
